@@ -1,4 +1,4 @@
-SQL Commands
+SQL Commands - test trigger
 ------------
 
 SELECT  *FROM avn;
