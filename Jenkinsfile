@@ -15,7 +15,7 @@ pipeline {
     stage('Build') {
       steps {
         // get code from git repo
-        git 'https://https://github.com/tipurmadan/DevOps-Demo-WebApp.git'
+        git 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git'
         
         
         sh "mvn clean compile"
