@@ -3,6 +3,9 @@ pipeline {
   stages {
     stage('Commit change') {
       steps {
+        triggers {
+             pollSCM ''
+            }
         echo 'Build Successful'
       }
     }
