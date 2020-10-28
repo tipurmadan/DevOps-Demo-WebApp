@@ -1,5 +1,5 @@
 SQL Commands - test trigger
-------------
+--------------
 
 SELECT  *FROM avn;
 
