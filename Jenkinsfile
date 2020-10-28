@@ -12,6 +12,10 @@ pipeline {
       }
     }
 
+    stage('Clone source'){
+      git url: 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git'
+    }
+    
     stage('Build') {
       steps {
         // get code from git repo
