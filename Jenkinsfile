@@ -4,6 +4,11 @@ pipeline {
   tools {
     maven "maven"
   }
+  triggers {
+           // poll repo every 2 minute for changes
+           pollSCM('*/2 * * * *')
+        }
+  
   stages {
     stage('Commit change') {
       steps {
@@ -21,11 +26,6 @@ pipeline {
     
     stage('Build') {
       steps {
-        
-         triggers {
-           // poll repo every 2 minute for changes
-           pollSCM('*/2 * * * *')
-        }
         // get code from git repo
         git 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git'
         
