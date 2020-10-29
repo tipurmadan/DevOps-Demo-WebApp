@@ -10,7 +10,8 @@ pipeline {
   }
  
   
-   
+  stages{
+    
     stage('Build') {
       steps {
         // get code from git repo
