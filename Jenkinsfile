@@ -13,7 +13,17 @@ pipeline {
   stages {
     stage('Commit change') {
       steps {
-         
+       
+         script {
+                properties([pipelineTriggers([snapshotDependencies()])])
+         }
+         withMaven(
+            mavenLocalRepo: '.repository'
+         ) {
+                bat "clean deploy"
+            }
+        
+        
         echo 'Build Successful'
       }
     }
