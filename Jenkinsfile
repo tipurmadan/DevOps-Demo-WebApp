@@ -13,7 +13,9 @@ pipeline {
   stages {
     stage('Commit change') {
       steps {
-
+                    script {
+                        properties([pipelineTriggers([snapshotDependencies()])])
+                 }
         echo 'Build Successful'
       }
     }
