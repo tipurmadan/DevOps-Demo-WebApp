@@ -1,13 +1,14 @@
 pipeline {
   agent any
   
+  triggers {
+        pollSCM 'H/2 * * * *'
+    }
+  
   tools {
     maven "maven"
   }
-  triggers {
-           // poll repo every 2 minute for changes
-           pollSCM('*/2 * * * *')
-        }
+ 
   
   stages {
     stage('Commit change') {
