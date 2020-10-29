@@ -14,10 +14,11 @@ pipeline {
     
     stage('Build') {
       steps {
-        // get code from git repo
-        //git 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git'
-        sh "mvn clean install"
-        echo 'Build Success'
+              //sh 'mvn -Dmaven.test.failure.ignore=true install' 
+                sh "mvn clean compile"
+               slackSend channel: "#alerts", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
+        
+        //echo 'Build Success'
       }
     }
 
