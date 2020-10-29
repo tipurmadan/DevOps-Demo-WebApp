@@ -1,4 +1,4 @@
-SQL Commands - test trigger123
+SQL Commands - test trigger1234
 --------------
 
 SELECT  *FROM avn;
