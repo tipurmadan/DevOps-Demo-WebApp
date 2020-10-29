@@ -16,7 +16,7 @@ pipeline {
       steps {
         // get code from git repo
         //git 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git'
-        sh "mvn clean compile"
+        sh "mvn clean install"
         echo 'Build Success'
       }
     }
