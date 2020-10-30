@@ -15,7 +15,7 @@ pipeline {
     
     stage('Build') {
       steps {
-              sh 'mvn -Dmaven.test.failure.ignore=true install' 
+              //sh 'mvn -Dmaven.test.failure.ignore=true install' 
               //sh "mvn clean compile"
                //slackSend channel: "#alerts", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER}"
         
