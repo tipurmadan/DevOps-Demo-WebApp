@@ -28,7 +28,7 @@ pipeline {
     stage('SonarQube Analysis') {
 	    steps{
         withSonarQubeEnv(credentialsId: 'sonar', installationName:'sonarqube') { // You can override the credential to be used
-       		sh 'mvn clean package sonar:sonar -Dsonar.host.url=http://34.71.72.225// -Dsonar.sources=. -Dsonar.tests=. -Dsonar.test.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.exclusions=**/test/java/servlet/createpage_junit.java'
+       		sh 'mvn clean package sonar:sonar -Dsonar.host.url=http://34.71.72.225// -Dsonar.sources=. -Dsonar.tests=. -Dsonar.test.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.exclusions=**/test/java/servlet/createpage_junit.java -Dsonar.login=admin -Dsonar.password=admin'
         }
 	 timeout(time: 10, unit: 'MINUTES') {
             waitForQualityGate abortPipeline: true
