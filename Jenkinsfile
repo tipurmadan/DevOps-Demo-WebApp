@@ -14,19 +14,17 @@ pipeline {
     
     
     
-     stage('Sonarqube') {
-    environment {
-        scannerHome = tool 'sonarqubescanner'
-    }
-    steps {
-        withSonarQubeEnv('sonarqube') {
-            sh "${scannerHome}/bin/sonar-scanner"
+      stage('SonarQube Analysis') {
+        withSonarQubeEnv(credentialsId: 'sonar', installationName: 'sonarqubescanner') { // You can override the credential to be used
+       		sh 'mvn clean package sonar:sonar -Dsonar.host.url=http://34.71.72.225// -Dsonar.sources=. -Dsonar.tests=. -Dsonar.test.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.exclusions=**/test/java/servlet/createpage_junit.java'
         }
-        timeout(time: 10, unit: 'MINUTES') {
-            waitForQualityGate abortPipeline: true
-        }
-    }
-}
+	timeout(time: 1, unit: 'HOURS') { // Just in case something goes wrong, pipeline will be killed after a timeout
+	    def qg = waitForQualityGate() // Reuse taskId previously collected by withSonarQubeEnv
+	    if (qg.status != 'OK') {
+	      error "Pipeline aborted due to quality gate failure: ${qg.status}"
+	    }
+	}             
+  }
     
     
     
