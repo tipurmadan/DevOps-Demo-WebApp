@@ -27,7 +27,7 @@ pipeline {
     
     stage('SonarQube Analysis') {
 	    steps{
-        withSonarQubeEnv(credentialsId: 'sonar-test', installationName:'sonarqubescanner') { // You can override the credential to be used
+        withSonarQubeEnv(credentialsId: 'sonar', installationName:'sonarqube') { // You can override the credential to be used
        		sh 'mvn clean package sonar:sonar -Dsonar.host.url=http://34.71.72.225// -Dsonar.sources=. -Dsonar.tests=. -Dsonar.test.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.exclusions=**/test/java/servlet/createpage_junit.java'
         }
 	 timeout(time: 10, unit: 'MINUTES') {
