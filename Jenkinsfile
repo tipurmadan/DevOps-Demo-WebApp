@@ -55,7 +55,7 @@ pipeline {
 	  
 	   stage('UI Test') {
 		   steps{
-				publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\functionaltest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'UITEST_Report', reportTitles: 'HTML_Report'])
+				publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\functionaltest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'UITEST_Report', reportTitles: 'TestHTMLReport'])
 		   }
     			}
 	  
