@@ -55,16 +55,16 @@ pipeline {
 	  
 	   stage('UI Test') {
 		   steps{
-        buildInfo = rtMaven.run pom: 'functionaltest/pom.xml', goals: 'test'
-	publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\functionaltest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'UI Test Report', reportTitles: 'HTML Report'])
+				//buildInfo = rtMaven.run pom: 'functionaltest/pom.xml', goals: 'test'
+				publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\functionaltest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'UI Test Report', reportTitles: 'HTML Report'])
 		   }
     			}
 	  
 	  
 	   stage('Performance Test') {
-		   steps{
-    	echo 'BlazeMeterTest' 
-	blazeMeterTest credentialsId: 'blazemeter', testId: '8491749.taurus', workspaceId: '648314'
+		 steps{
+			echo 'BlazeMeterTest' 
+			blazeMeterTest credentialsId: 'blazemeter', testId: '8491749.taurus', workspaceId: '648314'
 		   }
     }
 	  
