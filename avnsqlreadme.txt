@@ -1,4 +1,4 @@
-SQL Commands - test12345678 trigger12345678
+SQL Commands - test12345678 trigger12345678 - webhook
 --------------
 
 SELECT  *FROM avn;
