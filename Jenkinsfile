@@ -36,9 +36,9 @@ pipeline {
     
     
     stage('SonarQube Analysis') {
-	    		 environment {
-       	 		scannerHome = tool 'sonarqubescanner'
-    					}		
+	    		// environment {
+       	 		//scannerHome = tool 'sonarqubescanner'
+    			//		}		
 	    steps{
 		    echo 'commented Sonarqube analysis'
         	  //withSonarQubeEnv(credentialsId: 'sonar', installationName:'sonarqube') { 
