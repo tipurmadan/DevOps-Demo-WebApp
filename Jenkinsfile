@@ -1,12 +1,13 @@
-//def JENKINS_URL = "http://35.232.130.43:8080/"
+def JENKINS_URL = "http://35.232.130.43:8080/"
 
 pipeline {
 	
 	 
   agent any
-  environment {
-        JENKINS_URL = "${env.JENKINS_URL}"
-    }
+//  environment {
+  //      JENKINS_URL = "${env.JENKINS_URL}"
+   // }
+	
  // triggers {
         //pollSCM 'H/2 * * * *'
    // }
