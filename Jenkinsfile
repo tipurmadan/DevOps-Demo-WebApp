@@ -1,12 +1,13 @@
 def JENKINS_URL = "http://35.232.130.43:8080/"
-
+def JENKINSPath
 pipeline {
 	
 	 
   agent any
-//  environment {
-  //      JENKINS_URL = "${env.JENKINS_URL}"
-   // }
+  environment {
+        JENKINS_URL = "${env.JENKINS_URL}"
+	  JENKINSPath = JENKINS_URL+'\'
+    }
 	
  // triggers {
         //pollSCM 'H/2 * * * *'
@@ -25,7 +26,7 @@ pipeline {
       steps {
               sh 'mvn -Dmaven.test.failure.ignore=true install' 
               //sh "mvn clean compile"
-              slackSend channel: "#alerts", message: "Build Started: ${env.JOB_NAME} JENKINS_URL+'\'+${env.BUILD_NUMBER}"
+              slackSend channel: "#alerts", message: "Build Started: ${env.JOB_NAME} "+JENKINSPath
 	      
         
         echo 'Build Done: ' + JENKINS_URL 
