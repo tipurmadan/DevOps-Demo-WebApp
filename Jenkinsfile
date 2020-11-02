@@ -1,4 +1,9 @@
 pipeline {
+	
+	 environment {
+     ${env.JENKINS_URL} = "http://35.232.130.43:8080/"
+   }
+
   agent any
   
  // triggers {
@@ -9,7 +14,7 @@ pipeline {
     maven "maven"
   }
 	
-	${env.JENKINS_URL} : 'http://35.232.130.43:8080/'
+	
   
   stages{
     
