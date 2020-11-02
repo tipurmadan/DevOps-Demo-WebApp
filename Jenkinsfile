@@ -26,7 +26,7 @@ pipeline {
       steps {
               sh 'mvn -Dmaven.test.failure.ignore=true install' 
               //sh "mvn clean compile"
-              slackSend channel: "#alerts", message: "Build Started:" + JENKINS_URL + "_"+ env.BUILD_NUMBER
+              slackSend channel: "#alerts", message: "Build Started:" + JENKINS_URL + "//job//JenkinsPipeline"+ env.BUILD_NUMBER
 	      
         
         echo 'Build Done: ' + JENKINS_URL 
