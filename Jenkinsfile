@@ -8,7 +8,8 @@ pipeline {
   tools {
     maven "maven"
   }
- 
+	
+ env.JENKINS_URL = 'http://35.232.130.43:8080/'
   
   stages{
     
@@ -19,7 +20,7 @@ pipeline {
               //sh "mvn clean compile"
               slackSend channel: "#alerts", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER} ${env.BUILD_URL}"
 	      
-        JENKINS_URL = 'http://35.232.130.43:8080/'
+        
         echo 'Build Done'
       }
     }
