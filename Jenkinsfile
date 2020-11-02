@@ -1,10 +1,12 @@
+def JENKINS_URL = "http://35.232.130.43:8080/"
+def JENKINS_URL1 = "http://35.232.130.43:8080/"
 pipeline {
 	
-	 environment {
-     ${env.JENKINS_URL} = "http://35.232.130.43:8080/"
-   }
-
+	 
   agent any
+	 environment {
+        JENKINS_URL1 = "${env.JENKINS_URL}"
+    }
   
  // triggers {
         //pollSCM 'H/2 * * * *'
@@ -26,7 +28,7 @@ pipeline {
               slackSend channel: "#alerts", message: "Build Started: ${env.JOB_NAME} ${env.BUILD_NUMBER} ${env.BUILD_URL}"
 	      
         
-        echo 'Build Done'
+        echo 'Build Done' + JENKINS_URL1 + JENKINS_URL1
       }
     }
     
