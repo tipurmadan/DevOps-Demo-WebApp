@@ -4,9 +4,7 @@ pipeline {
 	
 	 
   agent any
-	 environment {
-        JENKINS_URL = "${env.JENKINS_URL}"
-    }
+	 
   
  // triggers {
         //pollSCM 'H/2 * * * *'
