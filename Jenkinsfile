@@ -1,12 +1,12 @@
 def JENKINS_URL = "http://35.232.130.43:8080/"
-def JENKINSPath
+
 pipeline {
 	
 	 
   agent any
   environment {
         JENKINS_URL = "${env.JENKINS_URL}"
-	  JENKINSPath 
+
     }
 	
  // triggers {
