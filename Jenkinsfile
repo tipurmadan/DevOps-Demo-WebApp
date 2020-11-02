@@ -6,7 +6,7 @@ pipeline {
   agent any
   environment {
         JENKINS_URL = "${env.JENKINS_URL}"
-	  JENKINSPath = JENKINS_URL & '\'
+	  JENKINSPath 
     }
 	
  // triggers {
@@ -26,7 +26,7 @@ pipeline {
       steps {
               sh 'mvn -Dmaven.test.failure.ignore=true install' 
               //sh "mvn clean compile"
-              slackSend channel: "#alerts", message: "Build Started: ${env.JOB_NAME} "+JENKINSPath
+              slackSend channel: "#alerts", message: "Build Started: env.JENKINS_URL"
 	      
         
         echo 'Build Done: ' + JENKINS_URL 
