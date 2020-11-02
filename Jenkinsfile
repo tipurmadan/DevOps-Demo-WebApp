@@ -37,7 +37,7 @@ pipeline {
     
     stage('SonarQube Analysis') {
 	    		 environment {
-       	 		scannerHome = tool 'sonarqubescanner'
+       	 			scannerHome = tool 'sonarqubescanner'
     				}		
 	    steps{
 		    echo 'commented Sonarqube analysis'
