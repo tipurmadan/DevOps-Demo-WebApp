@@ -31,6 +31,11 @@ pipeline {
         
         echo 'Build Done' 
       }
+	post {
+       always {
+           jiraSendBuildInfo site: 'squad-3-devops.atlassian.net'
+       }
+   }
     }
     
     
@@ -140,13 +145,13 @@ pipeline {
     			}
 	  
 	  
-	   stage('Performance Test') {
-		 steps{
-			echo 'BlazeMeterTest' 
-			blazeMeterTest credentialsId: 'blazemeter', testId: '8491749.taurus', workspaceId: '648314'
-			 slackSend channel: "#alerts", message: "Performance test report published"
-		   }
-    }
+	  // stage('Performance Test') {
+		 //steps{
+			//echo 'BlazeMeterTest' 
+			//blazeMeterTest credentialsId: 'blazemeter', testId: '8491749.taurus', workspaceId: '648314'
+			// slackSend channel: "#alerts", message: "Performance test report published"
+		   //}
+    //}
 	  
 	  
 	  stage('Deploy to Prod') {
@@ -155,6 +160,11 @@ pipeline {
 			  slackSend channel: "#alerts", message: "Deployed to prod"
 			  jiraSendDeploymentInfo environmentId: 'Prod', environmentName: 'Production', environmentType: 'Production', serviceIds: ['Prod service id'], site: 'squad-3-devops.atlassian.net', state: 'deployed'
 		  }
+		   post {
+       always {
+           jiraSendDeploymentInfo site: 'squad-3-devops.atlassian.net', environmentId: 'us-prod-1', environmentName: 'us-prod-1', environmentType: 'production'
+       }
+   }
          }
 	  
 	  
