@@ -1,4 +1,4 @@
-def JENKINS_URL = "http://35.232.130.43:8080/"
+def JENKINS_URL = "http://107.178.215.30:8080/"
 
 pipeline {
 	
@@ -27,7 +27,7 @@ pipeline {
               sh 'mvn -Dmaven.test.failure.ignore=true install' 
               //sh "mvn clean compile"
               slackSend channel: "#alerts", message: "Build Started:" + JENKINS_URL + "job/" + env.JOB_NAME+"/"+ env.BUILD_NUMBER
-	      
+	      jiraSendBuildInfo branch: 'master', site: 'squad-3-devops.atlassian.net'
         
         echo 'Build Done' 
       }
@@ -58,10 +58,11 @@ pipeline {
 	
 	stage('Deploy to Test') {
 		steps{
-			deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://34.123.69.37:8080/')], contextPath: '/QAWebapp', war: '**/*.war'
+			deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://35.202.168.134:8080/')], contextPath: '/QAWebapp', war: '**/*.war'
 		
 			   slackSend channel: "#alerts", message: "Deployed to Test server"
-			
+			jiraSendDeploymentInfo environmentId: 'Test', environmentName: 'Test Env', environmentType: 'development', serviceIds: ['Test service id'], site: 'squad-3-devops.atlassian.net', state: 'deployed'
+
 		}
     }
 	 
@@ -150,8 +151,9 @@ pipeline {
 	  
 	  stage('Deploy to Prod') {
 		  steps{
-	      deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://35.193.167.170:8080/')], contextPath: '/ProdWebapp', war: '**/*.war'
+	      deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://34.71.36.151:8080/')], contextPath: '/ProdWebapp', war: '**/*.war'
 			  slackSend channel: "#alerts", message: "Deployed to prod"
+			  jiraSendDeploymentInfo environmentId: 'Prod', environmentName: 'Production', environmentType: 'Production', serviceIds: ['Prod service id'], site: 'squad-3-devops.atlassian.net', state: 'deployed'
 		  }
          }
 	  
