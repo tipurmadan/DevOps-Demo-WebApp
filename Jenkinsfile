@@ -6,7 +6,7 @@ pipeline {
   agent any
   environment {
         JENKINS_URL = "${env.JENKINS_URL}"
-	  JENKINSPath = JENKINS_URL+'\'
+	  JENKINSPath = JENKINS_URL & '\'
     }
 	
  // triggers {
