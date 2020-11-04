@@ -28,7 +28,7 @@ pipeline {
     				}		
 	    steps{
 		   withSonarQubeEnv('sonarqube') {
-       		//sh 'mvn clean package sonar:sonar -Dsonar.sources=. -Dsonar.tests=. -Dsonar.test.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.exclusions=**/test/java/servlet/createpage_junit.java -Dsonar.login=admin -Dsonar.password=admin'
+       		sh 'mvn clean package sonar:sonar -Dsonar.sources=. -Dsonar.tests=. -Dsonar.test.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.exclusions=**/test/java/servlet/createpage_junit.java -Dsonar.login=admin -Dsonar.password=admin'
 		slackSend channel: "#alerts", message: "SonarQube Analysis Done successfully"
         }
 	
@@ -51,7 +51,7 @@ pipeline {
 	 
 	  
 	  
-	  
+	
 	  
 	  
 	  
@@ -99,13 +99,13 @@ pipeline {
     			}
 	  
 	  
-	   //stage('Performance Test') {
-		// steps{
-		//	//echo 'BlazeMeterTest' 
-			//blazeMeterTest credentialsId: 'blazemeter', testId: '8487271.taurus', workspaceId: '646655'
-			// slackSend channel: "#alerts", message: "Performance test report published"
-		 //  }
- //  }
+	   stage('Performance Test') {
+		 steps{
+			echo 'BlazeMeterTest' 
+			blazeMeterTest credentialsId: 'blazemeter', testId: '8487271.taurus', workspaceId: '646655'
+			 slackSend channel: "#alerts", message: "Performance test report published"
+		   }
+   }
 	  
 	  
 	  stage('Deploy to Prod') {
