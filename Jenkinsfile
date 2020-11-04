@@ -141,12 +141,11 @@ pipeline {
 		failure {
 			slackSend channel: '#devops-learning', color:'RED', message: "Pipeline FAILURE ${env.JOB_NAME} #${env.BUILD_NUMBER}"
 		}
-	}
-	post {
 		success {
 			slackSend channel: '#devops-learning', color:'good', message: "Pipeline Completed ${CurrentBuild.fullDisplayName} successfully"
 		}
 	}
+	
 	
 		
 }
