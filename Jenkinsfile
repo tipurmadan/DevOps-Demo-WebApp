@@ -1,12 +1,9 @@
-def JENKINS_URL = "http://107.178.215.30:8080/"
+def JENKINS_URL = "http://35.238.119.174:8080/"
 
 pipeline {
-	
-	 
   agent any
   environment {
         JENKINS_URL = "${env.JENKINS_URL}"
-
     }
 	
  // triggers {
@@ -16,12 +13,8 @@ pipeline {
   tools {
     maven "maven"
   }
-	
-	
   
   stages{
-    
-    
     stage('Build') {
       steps {
               sh 'mvn -Dmaven.test.failure.ignore=true install' 
@@ -63,7 +56,7 @@ pipeline {
 	
 	stage('Deploy to Test') {
 		steps{
-			deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://35.202.168.134:8080/')], contextPath: '/QAWebapp', war: '**/*.war'
+			deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://104.198.185.174:8080/')], contextPath: '/QAWebapp', war: '**/*.war'
 		
 			   slackSend channel: "#alerts", message: "Deployed to Test server"
 			jiraSendDeploymentInfo environmentId: 'Test', environmentName: 'Test Env', environmentType: 'development', serviceIds: ['Test service id'], site: 'squad-3-devops.atlassian.net', state: 'deployed'
@@ -156,7 +149,7 @@ pipeline {
 	  
 	  stage('Deploy to Prod') {
 		  steps{
-	      deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://34.71.36.151:8080/')], contextPath: '/ProdWebapp', war: '**/*.war'
+	      deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://34.70.7.127:8080/')], contextPath: '/ProdWebapp', war: '**/*.war'
 			  slackSend channel: "#alerts", message: "Deployed to prod"
 			  jiraSendDeploymentInfo environmentId: 'Prod', environmentName: 'Production', environmentType: 'Production', serviceIds: ['Prod service id'], site: 'squad-3-devops.atlassian.net', state: 'deployed'
 		  }
