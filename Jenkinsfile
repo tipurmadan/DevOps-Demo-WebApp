@@ -2,14 +2,7 @@ def JENKINS_URL = "http://35.238.119.174:8080/"
 
 pipeline {
   agent any
-  environment {
-        JENKINS_URL = "${env.JENKINS_URL}"
-    }
 	
- // triggers {
-        //pollSCM 'H/2 * * * *'
-   // }
-  
   tools {
     maven "maven"
   }
@@ -17,36 +10,28 @@ pipeline {
   stages{
     stage('Build') {
       steps {
-              sh 'mvn -Dmaven.test.failure.ignore=true install' 
-              //sh "mvn clean compile"
+              //sh 'mvn -Dmaven.test.failure.ignore=true install' 
+              sh "mvn clean install"
               slackSend channel: "#alerts", message: "Build Started:" + JENKINS_URL + "job/" + env.JOB_NAME+"/"+ env.BUILD_NUMBER
 	      jiraSendBuildInfo branch: 'master', site: 'squad-3-devops.atlassian.net'
         
         echo 'Build Done' 
       }
-	post {
-       always {
-           jiraSendBuildInfo site: 'squad-3-devops.atlassian.net'
-       }
-   }
+	
     }
     
     
     
     stage('SonarQube Analysis') {
-	    		 //environment {
-       	 			//scannerHome = tool 'sonarqubescanner'
-    				//}		
+	    		 environment {
+       	 			scannerHome = tool 'sonarqubescanner'
+    				}		
 	    steps{
-		    echo 'commented Sonarqube analysis'
-        	  //withSonarQubeEnv(credentialsId: 'sonar', installationName:'sonarqube') { 
 		    withSonarQubeEnv('sonarqube') {
-       		//sh 'mvn clean package sonar:sonar -Dsonar.sources=. -Dsonar.tests=. -Dsonar.test.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.exclusions=**/test/java/servlet/createpage_junit.java -Dsonar.login=admin -Dsonar.password=admin'
+       		sh 'mvn clean package sonar:sonar -Dsonar.sources=. -Dsonar.tests=. -Dsonar.test.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.exclusions=**/test/java/servlet/createpage_junit.java -Dsonar.login=admin -Dsonar.password=admin'
 		slackSend channel: "#alerts", message: "SonarQube Analysis Done successfully"
         }
-	// timeout(time: 10, unit: 'MINUTES') {
-         //   waitForQualityGate abortPipeline: true
-       // }
+	
       
   }
     }
@@ -92,25 +77,13 @@ pipeline {
                     spec: """{
                             "files": [
                                     {
-                                        "pattern": "*.war",
+                                        "pattern": "**/*.war",
                                         "target": "libs-release-local"
                                     }
                                 ]
                             }"""
                 )
-               rtMavenDeployer (
-                    id: "MAVEN_DEPLOYER",
-                    serverId: 'artifactory',
-                    releaseRepo: "deploy1",
-                    snapshotRepo: "deploy1"
-                )
-
-                rtMavenResolver (
-                    id: "MAVEN_RESOLVER",
-                    serverId: 'artifactory',
-                    releaseRepo: "deploy1",
-                    snapshotRepo: "deploy1"
-                )
+        
               rtPublishBuildInfo (
     serverId: 'artifactory')
    
@@ -138,13 +111,13 @@ pipeline {
     			}
 	  
 	  
-	  // stage('Performance Test') {
-		 //steps{
-			//echo 'BlazeMeterTest' 
-			//blazeMeterTest credentialsId: 'blazemeter', testId: '8491749.taurus', workspaceId: '648314'
-			// slackSend channel: "#alerts", message: "Performance test report published"
-		   //}
-    //}
+	   stage('Performance Test') {
+		 steps{
+			echo 'BlazeMeterTest' 
+			blazeMeterTest credentialsId: 'blazemeter', testId: '8491749.taurus', workspaceId: '648314'
+			 slackSend channel: "#alerts", message: "Performance test report published"
+		   }
+   }
 	  
 	  
 	  stage('Deploy to Prod') {
@@ -153,11 +126,7 @@ pipeline {
 			  slackSend channel: "#alerts", message: "Deployed to prod"
 			  jiraSendDeploymentInfo environmentId: 'Prod', environmentName: 'Production', environmentType: 'Production', serviceIds: ['Prod service id'], site: 'squad-3-devops.atlassian.net', state: 'deployed'
 		  }
-		   post {
-       always {
-           jiraSendDeploymentInfo site: 'squad-3-devops.atlassian.net', environmentId: 'us-prod-1', environmentName: 'us-prod-1', environmentType: 'production'
-       }
-   }
+		  
          }
 	  
 	  
