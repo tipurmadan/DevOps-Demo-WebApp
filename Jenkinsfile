@@ -102,7 +102,7 @@ pipeline {
 	   stage('Performance Test') {
 		 steps{
 			echo 'BlazeMeterTest' 
-			blazeMeterTest credentialsId: 'blazemeter', testId: '8491749.taurus', workspaceId: '648314'
+			blazeMeterTest credentialsId: 'blazemeter', testId: '8487271.taurus', workspaceId: '646655'
 			 slackSend channel: "#alerts", message: "Performance test report published"
 		   }
    }
