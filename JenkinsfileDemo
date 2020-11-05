@@ -18,7 +18,8 @@ pipeline {
 			  	
 			         jiraAddComment comment: 'Checkout Test ', idOrKey: "${'SQUAD3-2'}", site: 'jirasite'
         			jiraTransitionIssue idOrKey: "${'SQUAD3-2'}", input: [transition: [id: '31']] , site: 'jirasite'
-			      jiraSendBuildInfo branch: "${'SQUAD3-2'}", site: 'squad-3-devops.atlassian.net'
+			      jiraSendBuildInfo branch: "${'SQUAD3-2'}", site: 'jirasite'
+			      jiraSendDeploymentInfo environmentId: 'Prod', environmentName: 'Production', environmentType: 'Production', serviceIds: ['http://35.238.187.100:8080/ProdWebapp'], site: 'jirasite', state: 'successful'
 		  }
     }
 	  
