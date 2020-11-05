@@ -1,4 +1,4 @@
-def JENKINS_URL = "http://35.238.119.174:8080/"
+def JENKINS_URL = "http://35.223.82.59:8080/"
 
 pipeline {
   agent any
@@ -49,10 +49,10 @@ pipeline {
 	
 	stage('Deploy to Test') {
 		steps{
-			deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://104.198.185.174:8080/')], contextPath: '/QAWebapp', war: '**/*.war'
+			deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://104.198.208.88:8080/')], contextPath: '/QAWebapp', war: '**/*.war'
 		
 			   slackSend channel: "#alerts", message: "Deployed to Test server"
-			jiraSendDeploymentInfo environmentId: 'Test', environmentName: 'Test Env', environmentType: 'development', serviceIds: ['http://104.198.185.174:8080/QAwebapp'], site: 'squad-3-devops.atlassian.net', state: 'deployed'issu
+			jiraSendDeploymentInfo environmentId: 'Test', environmentName: 'Test Env', environmentType: 'development', serviceIds: ['http://104.198.208.88:8080/QAwebapp'], site: 'squad-3-devops.atlassian.net', state: 'deployed'issu
 
 		}
     }
@@ -108,20 +108,20 @@ pipeline {
     			}
 	  
 	  
-	   stage('Performance Test') {
-		 steps{
-			echo 'BlazeMeterTest' 
-			blazeMeterTest credentialsId: 'blazemeter', testId: '8487271.taurus', workspaceId: '646655'
-			 slackSend channel: "#alerts", message: "Performance test report published"
-		   }
-   }
+	   //stage('Performance Test') {
+	//	 steps{
+	//		echo 'BlazeMeterTest' 
+	//		blazeMeterTest credentialsId: 'blazemeter', testId: '8487271.taurus', workspaceId: '646655'
+	//		 slackSend channel: "#alerts", message: "Performance test report published"
+	//	   }
+ //  }
 	  
 	  
 	  stage('Deploy to Prod') {
 		  steps{
-	      deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://34.70.7.127:8080/')], contextPath: '/ProdWebapp', war: '**/*.war'
+	      deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://35.238.187.100:8080/')], contextPath: '/ProdWebapp', war: '**/*.war'
 			  slackSend channel: "#alerts", message: "Deployed to prod"
-			  jiraSendDeploymentInfo environmentId: 'Prod', environmentName: 'Production', environmentType: 'Production', serviceIds: ['http://34.70.7.127:8080/ProdWebapp'], site: 'squad-3-devops.atlassian.net', state: 'deployed'
+			  jiraSendDeploymentInfo environmentId: 'Prod', environmentName: 'Production', environmentType: 'Production', serviceIds: ['http://35.238.187.100:8080/ProdWebapp'], site: 'squad-3-devops.atlassian.net', state: 'deployed'
 		  }
 		  
          }
