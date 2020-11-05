@@ -54,7 +54,7 @@ pipeline {
 			deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://104.198.208.88:8080/')], contextPath: '/QAWebapp', war: '**/*.war'
 		
 			   slackSend channel: "#alerts", message: "Deployed to Test server"
-			jiraSendDeploymentInfo environmentId: 'Test', environmentName: 'Test Env', environmentType: 'development', serviceIds: ['http://104.198.208.88:8080/QAwebapp'], site: 'squad-3-devops.atlassian.net', state: 'deployed'issu
+			jiraSendDeploymentInfo environmentId: 'Test', environmentName: 'Test Env', environmentType: 'development', serviceIds: ['http://104.198.208.88:8080/QAwebapp'], site: 'squad-3-devops.atlassian.net', state: 'deployed'
 
 		}
     }
