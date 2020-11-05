@@ -17,8 +17,6 @@ pipeline {
 			checkout([$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[url: 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git']]])
 			  	
 			        // jiraAddComment comment: 'Checkout Test ', idOrKey: "${'SQUAD3-2'}", site: 'squad-3-devops.atlassian.net'
-				jiraComment comment: 'Checkout Test ', idOrKey: "${'SQUAD3-2'}", site: 'squad-3-devops.atlassian.net'
-				
         			//jiraTransitionIssue idOrKey: "${'SQUAD3-2'}", input: [transition: [id: '31']] , site: 'squad-3-devops.atlassian.net'
 			      jiraSendBuildInfo branch: "${'Devops-Bootcamp-2020'}", site: 'squad-3-devops.atlassian.net'
 		  }
