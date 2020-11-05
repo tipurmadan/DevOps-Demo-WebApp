@@ -18,17 +18,17 @@ pipeline {
     }
 	  
 	  
-    //stage('Build') {
-     // steps {
-             // //sh 'mvn -Dmaven.test.failure.ignore=true install' 
+    stage('Build') {
+      steps {
+              sh 'mvn -Dmaven.test.failure.ignore=true install' 
              // sh "mvn clean install"
-           //   slackSend channel: "#alerts", message: "Build Started:" + JENKINS_URL + "job/" + env.JOB_NAME+"/"+ env.BUILD_NUMBER
-	  //    jiraSendBuildInfo branch: 'master', site: 'squad-3-devops.atlassian.net'
+              slackSend channel: "#alerts", message: "Build Started:" + JENKINS_URL + "job/" + env.JOB_NAME+"/"+ env.BUILD_NUMBER
+	      jiraSendBuildInfo branch: 'master', site: 'squad-3-devops.atlassian.net'
         
-       // echo 'Build Done' 
-     // }
+        echo 'Build Done' 
+      }
 	
-   // }
+   }
     
     
     
