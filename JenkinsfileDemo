@@ -19,7 +19,8 @@ pipeline {
 			         //jiraAddComment comment: 'Checkout Test ', idOrKey: "${'SQUAD3-2'}", site: 'jirasite'
         			//jiraTransitionIssue idOrKey: "${'SQUAD3-2'}", input: [transition: [id: '31']] , site: 'jirasite'
 			      jiraSendBuildInfo branch: "${'SQUAD3-2'}", site: 'squad-3-devops.atlassian.net'
-			      jiraSendDeploymentInfo environmentId: 'production', environmentName: 'production', environmentType: 'production', serviceIds: [''], site: 'squad-3-devops.atlassian.net', state: 'successful'
+				jiraSendDeploymentInfo environmentId: 'us-stg-1', environmentName: 'devops-demo-test', environmentType: 'testing', serviceIds: [''], site: 'squad-3-devops.atlassian.net', state: 'in_progress'			      
+			      
 		  }
     }
 	  
