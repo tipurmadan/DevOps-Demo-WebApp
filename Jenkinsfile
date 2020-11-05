@@ -60,7 +60,8 @@ pipeline {
 		
 			   slackSend channel: "#alerts", message: "Deployed to Test server"
 			jiraSendDeploymentInfo environmentId: 'Test', environmentName: 'Test Env', environmentType: 'development', serviceIds: ['http://104.198.208.88:8080/QAwebapp'], site: 'squad-3-devops.atlassian.net', state: 'successful'
-
+			         jiraAddComment comment: 'Deployed to Test ', idOrKey: "${'SQUAD3-2'}", site: 'jirasite'
+        			
 		}
     }
 	 
@@ -122,6 +123,8 @@ pipeline {
 	      deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://35.238.187.100:8080/')], contextPath: '/ProdWebapp', war: '**/*.war'
 			  slackSend channel: "#alerts", message: "Deployed to prod"
 			  jiraSendDeploymentInfo environmentId: 'Prod', environmentName: 'Production', environmentType: 'Production', serviceIds: ['http://35.238.187.100:8080/ProdWebapp'], site: 'squad-3-devops.atlassian.net', state: 'successful'
+			  	jiraAddComment comment: 'Deployed to prod', idOrKey: "${'SQUAD3-2'}", site: 'jirasite'
+        			
 		  }
 		  
          }
@@ -132,6 +135,7 @@ pipeline {
 			   sh 'mvn test -f Acceptancetest/pom.xml'
 	publishHTML([escapeUnderscores:true,allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\Acceptancetest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'Sanity Test Report', reportTitles: 'HTML Report'])
 			  slackSend channel: "#alerts", message: "Sanity Test report published"
+        			jiraTransitionIssue idOrKey: "${'SQUAD3-2'}", input: [transition: [id: '31']] , site: 'jirasite'
 		  }
     }
 	
