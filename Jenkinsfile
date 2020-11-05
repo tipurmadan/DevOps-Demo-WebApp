@@ -16,7 +16,7 @@ pipeline {
         		git url: 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git'
 			  	
 			        // jiraAddComment comment: 'Checkout Test ', idOrKey: "${'Jira Integration'}", site: 'squad-3-devops.atlassian.net'
-        			jiraTransitionIssue idOrKey: "${'Jira Integration'}", input: [transition: [id: '21']] , site: 'squad-3-devops.atlassian.net'
+        			//jiraTransitionIssue idOrKey: "${'Jira Integration'}", input: [transition: [id: '21']] , site: 'squad-3-devops.atlassian.net'
 			      jiraSendBuildInfo branch: "${branchName}", site: 'squad-3-devops.atlassian.net'
 		  }
     }
