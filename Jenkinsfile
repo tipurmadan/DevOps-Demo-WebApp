@@ -10,6 +10,16 @@ pipeline {
   stages{
 	  
 	  
+	   stage('Test Samplle') {
+		   steps{
+			    	//sh 'mvn test -f functionaltest/pom.xml'
+			  sh mvn pom: 'functionaltest/pom.xml', goals: 'test'
+				publishHTML([escapeUnderscores:true,allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\functionaltest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'UI_TEST_Report', reportTitles: 'HTML Report'])
+			   slackSend channel: "#alerts", message: "UI Test report published"
+		   }
+    			}
+	  
+	  
 	  
 	  stage('Checkout') {
 		  steps	  {
@@ -103,7 +113,7 @@ pipeline {
 	  
 	   stage('UI Test') {
 		   steps{
-			    	sh 'mvn test -f functionaltest/pom.xml'
+			    	//sh 'mvn test -f functionaltest/pom.xml'
 				publishHTML([escapeUnderscores:true,allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\functionaltest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'UI_TEST_Report', reportTitles: 'HTML Report'])
 			   slackSend channel: "#alerts", message: "UI Test report published"
 		   }
