@@ -72,14 +72,7 @@ pipeline {
       stage ('Deploy Artifacts') {
             steps {
 		    
-	// rtServer (
-	    //id: 'artifactory',
-	    //url: 'https://arunsahu2222.jfrog.io/artifactory',
-	    // If you're using username and password:
-	   // username: 'deploy1',
-	    //password: '10@Storage'
-
-		   // )		    
+	    
                 rtUpload (
                     serverId: 'artifactory',
                     spec: """{
