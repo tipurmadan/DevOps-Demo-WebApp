@@ -8,6 +8,14 @@ pipeline {
   }
   
   stages{
+	  
+	  
+	  
+	  stage('Checkout') {
+        git url: 'https://github.com/tipurmadan/DevOps-Demo-Web.git'
+    }
+	  
+	  
     stage('Build') {
       steps {
               //sh 'mvn -Dmaven.test.failure.ignore=true install' 
@@ -66,8 +74,8 @@ pipeline {
 	    id: 'artifactory',
 	    url: 'https://arunsahu2222.jfrog.io/artifactory',
 	    // If you're using username and password:
-	    username: 'deploy1',
-	    password: '10@Storage'
+	    //username: 'deploy1',
+	   // password: '10@Storage'
 
 		    )		    
                 rtUpload (
@@ -93,6 +101,7 @@ pipeline {
 	  
 	   stage('UI Test') {
 		   steps{
+			    	sh 'mvn test functionaltest/pom.xml'
 				publishHTML([escapeUnderscores:true,allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\functionaltest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'UI_TEST_Report', reportTitles: 'HTML Report'])
 			   slackSend channel: "#alerts", message: "UI Test report published"
 		   }
@@ -120,6 +129,7 @@ pipeline {
 	  
 	  stage('Sanity Test') {
 		  steps{
+			   sh 'mvn test acceptancetest/pom.xml'
 	publishHTML([escapeUnderscores:true,allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\Acceptancetest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'Sanity Test Report', reportTitles: 'HTML Report'])
 			  slackSend channel: "#alerts", message: "Sanity Test report published"
 		  }
