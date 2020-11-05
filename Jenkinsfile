@@ -13,7 +13,8 @@ pipeline {
 	  
 	  stage('Checkout') {
 		  steps	  {
-        		git url: 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git'
+        		//git url: 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git'
+			  checkout([$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[url: 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git']]])
 			  	
 			        // jiraAddComment comment: 'Checkout Test ', idOrKey: "${'SQUAD3-2'}", site: 'squad-3-devops.atlassian.net'
         			//jiraTransitionIssue idOrKey: "${'SQUAD3-2'}", input: [transition: [id: '21']] , site: 'squad-3-devops.atlassian.net'
