@@ -131,7 +131,7 @@ pipeline {
 	  
 	  stage('Sanity Test') {
 		  steps{
-			   sh 'mvn test acceptancetest/pom.xml'
+			   sh 'mvn test -f acceptancetest/pom.xml'
 	publishHTML([escapeUnderscores:true,allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\Acceptancetest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'Sanity Test Report', reportTitles: 'HTML Report'])
 			  slackSend channel: "#alerts", message: "Sanity Test report published"
 		  }
