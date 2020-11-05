@@ -18,33 +18,33 @@ pipeline {
     }
 	  
 	  
-    stage('Build') {
-      steps {
-              //sh 'mvn -Dmaven.test.failure.ignore=true install' 
-              sh "mvn clean install"
-              slackSend channel: "#alerts", message: "Build Started:" + JENKINS_URL + "job/" + env.JOB_NAME+"/"+ env.BUILD_NUMBER
-	      jiraSendBuildInfo branch: 'master', site: 'squad-3-devops.atlassian.net'
+    //stage('Build') {
+     // steps {
+             // //sh 'mvn -Dmaven.test.failure.ignore=true install' 
+             // sh "mvn clean install"
+           //   slackSend channel: "#alerts", message: "Build Started:" + JENKINS_URL + "job/" + env.JOB_NAME+"/"+ env.BUILD_NUMBER
+	  //    jiraSendBuildInfo branch: 'master', site: 'squad-3-devops.atlassian.net'
         
-        echo 'Build Done' 
-      }
+       // echo 'Build Done' 
+     // }
 	
-    }
+   // }
     
     
     
-    stage('Static code Analysis') {
-	    		 environment {
-       	 			scannerHome = tool 'sonarqubescanner'
-    				}		
-	    steps{
-		   withSonarQubeEnv('sonarqube') {
-       		sh 'mvn clean package sonar:sonar -Dsonar.sources=. -Dsonar.tests=. -Dsonar.test.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.exclusions=**/test/java/servlet/createpage_junit.java -Dsonar.login=admin -Dsonar.password=admin'
-		slackSend channel: "#alerts", message: "SonarQube Analysis Done successfully"
-        }
+    //stage('Static code Analysis') {
+//	    		 environment {
+   //    	 			scannerHome = tool 'sonarqubescanner'
+    //				}		
+	//    steps{
+	//	   withSonarQubeEnv('sonarqube') {
+       //		sh 'mvn clean package sonar:sonar -Dsonar.sources=. -Dsonar.tests=. -Dsonar.test.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.exclusions=**/test/java/servlet/createpage_junit.java -Dsonar.login=admin -Dsonar.password=admin'
+	//	slackSend channel: "#alerts", message: "SonarQube Analysis Done successfully"
+      //  }
 	
       
-  }
-    }
+  //}
+ //   }
     
     
 	
