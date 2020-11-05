@@ -13,7 +13,7 @@ pipeline {
 	  
 	  stage('Checkout') {
 		  steps	  {
-        		git url: 'https://github.com/tipurmadan/DevOps-Demo-Web.git'
+        		git url: 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git'
 		  }
     }
 	  
