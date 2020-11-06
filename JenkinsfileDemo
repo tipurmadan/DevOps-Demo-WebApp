@@ -140,7 +140,7 @@ pipeline {
 	
 	    
 
-  }
+  }//end stages
 	post { 
 		failure {
 			slackSend channel: slackChannelfinal, color:'RED', message: "Pipeline FAILURE ${env.JOB_NAME} #${env.BUILD_NUMBER}"
@@ -150,6 +150,5 @@ pipeline {
 		}
 	}
 	
-	
 		
-}
+} //End pipeline
