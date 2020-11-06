@@ -44,7 +44,7 @@ pipeline {
               		sh 'mvn -Dmaven.test.failure.ignore=true install' 
 		      //sh "mvn clean install"
 		      slackSend channel: slackChannel, message: "Build Started:" + JENKINS_URL + "job/" + env.JOB_NAME+"/"+ env.BUILD_NUMBER
-		      jiraSendBuildInfo branch: 'master', site: JiraSitename
+		      jiraSendBuildInfo branch: "${branchName}", site: JiraSitename
         
         	      echo 'Build Done' 
       	}
