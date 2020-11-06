@@ -67,7 +67,7 @@ pipeline {
         			jiraTransitionIssue idOrKey: "${'SQUAD3-2'}", input: [transition: [id: '31']] , site: 'jirasite'
 			      jiraSendBuildInfo branch: "${'SQUAD3-2'}", site: 'squad-3-devops.atlassian.net'
 				//jiraSendDeploymentInfo environmentId: 'envid', environmentName: 'test-env-name', environmentType: 'testing',  serviceIds: ['http://35.225.186.14:8080/QAWebapp'],  site: 'squad-3-devops.atlassian.net', state: 'successful'			      
-				jiraSendDeploymentInfo environmentId: 'envid', environmentName: 'test-env-name', environmentType: 'testing',  serviceIds: [''],  site: 'squad-3-devops.atlassian.net', state: 'successful'			      
+				jiraSendDeploymentInfo environmentId: 'envid', environmentName: 'test-env-name', environmentType: 'testing',    site: 'squad-3-devops.atlassian.net', state: 'successful'			      
 
 		}
     }
