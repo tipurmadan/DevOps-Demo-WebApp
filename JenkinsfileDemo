@@ -1,4 +1,4 @@
-def JENKINS_URL = "http://35.223.82.59:8080/"
+def JENKINS_URL = "http://35.239.65.77:8080/"
 
 pipeline {
   agent any
@@ -16,11 +16,11 @@ pipeline {
         		//git url: 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git'
 			checkout([$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[url: 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git']]])
 			  	
-			         //jiraAddComment comment: 'SQUAD3-2 Checkout Test ', idOrKey: "${'SQUAD3-2'}", site: 'jirasite'
-				 jiraAddComment idOrKey: "${'SQUAD3-2'}", site: 'jirasite' , comment: "${currentBuild.getCurrentResult()}" + ' Code deployed to Test  ' + 'SQUAD3-2'
-        			jiraTransitionIssue idOrKey: "${'SQUAD3-2'}", input: [transition: [id: '31']] , site: 'jirasite'
-			      jiraSendBuildInfo branch: "${'SQUAD3-2'}", site: 'squad-3-devops.atlassian.net'
-				jiraSendDeploymentInfo environmentId: 'envid', environmentName: 'test-env-name', environmentType: 'testing',  site: 'squad-3-devops.atlassian.net', state: 'successful'			      
+			        
+				// jiraAddComment idOrKey: "${'SQUAD3-2'}", site: 'jirasite' , comment: "${currentBuild.getCurrentResult()}" + ' Code deployed to Test  ' + 'SQUAD3-2'
+        			//jiraTransitionIssue idOrKey: "${'SQUAD3-2'}", input: [transition: [id: '31']] , site: 'jirasite'
+			      //jiraSendBuildInfo branch: "${'SQUAD3-2'}", site: 'squad-3-devops.atlassian.net'
+				//jiraSendDeploymentInfo environmentId: 'envid', environmentName: 'test-env-name', environmentType: 'testing',  site: 'squad-3-devops.atlassian.net', state: 'successful'			      
 				
 			      
 		  }
@@ -63,7 +63,10 @@ pipeline {
 			deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://104.198.208.88:8080/')], contextPath: '/QAWebapp', war: '**/*.war'
 		
 			   slackSend channel: "#alerts", message: "Deployed to Test server"
-			jiraSendDeploymentInfo environmentId: 'Test', environmentName: 'Test Env', environmentType: 'development', serviceIds: ['http://104.198.208.88:8080/QAwebapp'], site: 'squad-3-devops.atlassian.net', state: 'successful'
+				 jiraAddComment idOrKey: "${'SQUAD3-2'}", site: 'jirasite' , comment: "${currentBuild.getCurrentResult()}" + ' Code deployed to Test  ' + 'SQUAD3-2'
+        			jiraTransitionIssue idOrKey: "${'SQUAD3-2'}", input: [transition: [id: '31']] , site: 'jirasite'
+			      jiraSendBuildInfo branch: "${'SQUAD3-2'}", site: 'squad-3-devops.atlassian.net'
+				jiraSendDeploymentInfo environmentId: 'envid', environmentName: 'test-env-name', environmentType: 'testing',  serviceIds: ['http://35.225.186.14:8080/QAWebapp'],  site: 'squad-3-devops.atlassian.net', state: 'successful'			      
 
 		}
     }
@@ -125,7 +128,10 @@ pipeline {
 		  steps{
 	      deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://35.238.187.100:8080/')], contextPath: '/ProdWebapp', war: '**/*.war'
 			  slackSend channel: "#alerts", message: "Deployed to prod"
-			  jiraSendDeploymentInfo environmentId: 'Prod', environmentName: 'Production', environmentType: 'Production', serviceIds: ['http://35.238.187.100:8080/ProdWebapp'], site: 'squad-3-devops.atlassian.net', state: 'successful'
+				 jiraAddComment idOrKey: "${'SQUAD3-2'}", site: 'jirasite' , comment: "${currentBuild.getCurrentResult()}" + ' Code deployed to Test  ' + 'SQUAD3-2'
+        			jiraTransitionIssue idOrKey: "${'SQUAD3-2'}", input: [transition: [id: '31']] , site: 'jirasite'
+			      jiraSendBuildInfo branch: "${'SQUAD3-2'}", site: 'squad-3-devops.atlassian.net'
+				jiraSendDeploymentInfo environmentId: 'envid', environmentName: 'test-env-name', environmentType: 'testing',  site: 'squad-3-devops.atlassian.net', state: 'successful'			      
 		  }
 		  
          }
