@@ -16,10 +16,12 @@ pipeline {
         		//git url: 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git'
 			checkout([$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[url: 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git']]])
 			  	
-			         jiraAddComment comment: 'SQUAD3-2 Checkout Test ', idOrKey: "${'SQUAD3-2'}", site: 'jirasite'
+			         //jiraAddComment comment: 'SQUAD3-2 Checkout Test ', idOrKey: "${'SQUAD3-2'}", site: 'jirasite'
+				 jiraAddComment idOrKey: "${'SQUAD3-2'}", site: 'jirasite' , comment: "${currentBuild.getCurrentResult()}" + ' Code deployed to Test on ' + "${BUILD_TIMESTAMP}" +    ' Build URL : ' + "${BUILD_URL}"
         			jiraTransitionIssue idOrKey: "${'SQUAD3-2'}", input: [transition: [id: '31']] , site: 'jirasite'
 			      jiraSendBuildInfo branch: "${'SQUAD3-2'}", site: 'squad-3-devops.atlassian.net'
 				jiraSendDeploymentInfo environmentId: 'envid', environmentName: 'test-env-name', environmentType: 'testing',  site: 'squad-3-devops.atlassian.net', state: 'in_progress'			      
+				
 			      
 		  }
     }
