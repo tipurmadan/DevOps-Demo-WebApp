@@ -17,10 +17,6 @@ pipeline {
 			checkout([$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[url: 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git']]])
 			  	
 			        
-				// jiraAddComment idOrKey: "${'SQUAD3-2'}", site: 'jirasite' , comment: "${currentBuild.getCurrentResult()}" + ' Code deployed to Test  ' + 'SQUAD3-2'
-        			//jiraTransitionIssue idOrKey: "${'SQUAD3-2'}", input: [transition: [id: '31']] , site: 'jirasite'
-			      //jiraSendBuildInfo branch: "${'SQUAD3-2'}", site: 'squad-3-devops.atlassian.net'
-				//jiraSendDeploymentInfo environmentId: 'envid', environmentName: 'test-env-name', environmentType: 'testing',  site: 'squad-3-devops.atlassian.net', state: 'successful'			      
 				
 			      
 		  }
