@@ -1,84 +1,83 @@
-def JENKINS_URL = "http://35.223.82.59:8080/"
+def JENKINS_URL = "http://35.239.65.77:8080/"
 
 pipeline {
   agent any
-	
+
+// environment variables
+  environment {
+    buildnum = currentBuild.getNumber()
+    
+    jiraIssue = 'SQUAD3-2'
+    branchName = 'SQUAD3-2'
+    
+    gitURL = "https://github.com/tipurmadan/DevOps-Demo-WebApp.git"
+    gitBranch = "*/master"
+    
+    slackChannel = "#alerts"
+    slackChannelfinal = "#devops-learning"
+    
+    JiraSitename = 'squad-3-devops.atlassian.net'
+    
+    testUrl = 'http://35.225.186.14:8080/'
+    ProdUrl =  'http://35.226.34.158:8080/'
+    }
+    
+    
   tools {
     maven "maven"
-  }
+  }	
   
   stages{
-	  
-
-	  
+  
+// 1.  	
 	  stage('Checkout') {
 		  steps	  {
-        		//git url: 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git'
-			  checkout([$class: 'GitSCM', branches: [[name: '*/master']], userRemoteConfigs: [[url: 'https://github.com/tipurmadan/DevOps-Demo-WebApp.git']]])
-			  	
-			        // jiraAddComment comment: 'Checkout Test ', idOrKey: "${'SQUAD3-2'}", site: 'squad-3-devops.atlassian.net'
-        			//jiraTransitionIssue idOrKey: "${'SQUAD3-2'}", input: [transition: [id: '21']] , site: 'squad-3-devops.atlassian.net'
-			      jiraSendBuildInfo branch: "${'Devops-Bootcamp-2020'}", site: 'squad-3-devops.atlassian.net'
+			  checkout([$class: 'GitSCM', branches: [[name: gitBranch]], userRemoteConfigs: [[url: gitURL]]])
+	                  jiraSendBuildInfo branch: "${branchName}", site: JiraSitename
 		  }
-    }
+  	  }
 	  
+//2. 	  
 	  
-    stage('Build') {
-      steps {
-              //sh 'mvn -Dmaven.test.failure.ignore=true install' 
-              sh "mvn clean install"
-              slackSend channel: "#alerts", message: "Build Started:" + JENKINS_URL + "job/" + env.JOB_NAME+"/"+ env.BUILD_NUMBER
-	      jiraSendBuildInfo branch: 'master', site: 'squad-3-devops.atlassian.net'
+   	 stage('Build') {
+     		 steps {
+              		sh 'mvn -Dmaven.test.failure.ignore=true install' 
+		      //sh "mvn clean install"
+		      slackSend channel: slackChannel, message: "Build Started:" + JENKINS_URL + "job/" + env.JOB_NAME+"/"+ env.BUILD_NUMBER
+		      jiraSendBuildInfo branch: 'master', site: JiraSitename
         
-        echo 'Build Done' 
-      }
+        	      echo 'Build Done' 
+      	}
 	
-   }
+   	}
     
+ //3   
     
+  //  	stage('Static code Analysis') {
+//	    		 environment {
+ //      	 			scannerHome = tool 'sonarqubescanner'
+  // 				}		
+//	    steps{
+//		  	 withSonarQubeEnv('sonarqube') {
+  //    		 	sh 'mvn clean package sonar:sonar -Dsonar.sources=. -Dsonar.tests=. -Dsonar.test.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.exclusions=**/test/java/servlet/createpage_junit.java -Dsonar.login=admin -Dsonar.password=admin'
+//			slackSend channel: slackChannel, message: "SonarQube Analysis Done successfully"
+//		        }
+ // 		}
+  //  }
     
-    stage('Static code Analysis') {
-	    		 environment {
-       	 			scannerHome = tool 'sonarqubescanner'
-   				}		
-	    steps{
-		   withSonarQubeEnv('sonarqube') {
-      	sh 'mvn clean package sonar:sonar -Dsonar.sources=. -Dsonar.tests=. -Dsonar.test.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.exclusions=**/test/java/servlet/createpage_junit.java -Dsonar.login=admin -Dsonar.password=admin'
-		slackSend channel: "#alerts", message: "SonarQube Analysis Done successfully"
-        }
-	
-      
-  }
-    }
-    
-    
-	
-	
+  //4  
 	stage('Deploy to Test') {
 		steps{
-			deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://104.198.208.88:8080/')], contextPath: '/QAWebapp', war: '**/*.war'
-		
-			   slackSend channel: "#alerts", message: "Deployed to Test server"
-			jiraSendDeploymentInfo environmentId: 'Test', environmentName: 'Test Env', environmentType: 'development', serviceIds: ['http://104.198.208.88:8080/QAwebapp'], site: 'squad-3-devops.atlassian.net', state: 'successful'
-			         jiraAddComment comment: 'Deployed to Test ', idOrKey: "${'SQUAD3-2'}", site: 'jirasite'
-        			
+			deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: testUrl)], contextPath: '/QAWebapp', war: '**/*.war'
+			slackSend channel: slackChannel, message: "Deployed to Test server"
+			jiraSendDeploymentInfo environmentId: 'Test', environmentName: 'Test Env', environmentType: 'development', site: JiraSitename, state: 'successful'
+			jiraAddComment comment: 'Deployed to Test ', idOrKey: "${jiraIssue}", site: 'jirasite'
 		}
-    }
+	    }
 	 
-	  
-	  
-	
-	  
-	  
-	  
-	  
-	  
-	  
-//}
+ //5	  
       stage ('Deploy Artifacts') {
             steps {
-		    
-	    
                 rtUpload (
                     serverId: 'artifactory',
                     spec: """{
@@ -92,50 +91,49 @@ pipeline {
                 )
         
               rtPublishBuildInfo (
-    serverId: 'artifactory')
+    			serverId: 'artifactory')
    
             }
         }
 
-	  
-	  
-	  
+ //6	  
 	   stage('UI Test') {
 		   steps{
 			    	sh 'mvn test -f functionaltest/pom.xml'
 				publishHTML([escapeUnderscores:true,allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\functionaltest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'UI_TEST_Report', reportTitles: 'HTML Report'])
-			   slackSend channel: "#alerts", message: "UI Test report published"
+			   	slackSend channel: slackChannel, message: "UI Test report published"
 		   }
     			}
 	  
-	  
+//7	  
 	   //stage('Performance Test') {
 	//	 steps{
 	//		echo 'BlazeMeterTest' 
 	//		blazeMeterTest credentialsId: 'blazemeter', testId: '8487271.taurus', workspaceId: '646655'
-	//		 slackSend channel: "#alerts", message: "Performance test report published"
+	//		 slackSend channel: slackChannel, message: "Performance test report published"
 	//	   }
  //  }
 	  
 	  
+//8	  
 	  stage('Deploy to Prod') {
 		  steps{
-	      deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: 'http://35.238.187.100:8080/')], contextPath: '/ProdWebapp', war: '**/*.war'
-			  slackSend channel: "#alerts", message: "Deployed to prod"
-			  jiraSendDeploymentInfo environmentId: 'Prod', environmentName: 'Production', environmentType: 'Production', serviceIds: ['http://35.238.187.100:8080/ProdWebapp'], site: 'squad-3-devops.atlassian.net', state: 'successful'
-			  	jiraAddComment comment: 'Deployed to prod', idOrKey: "${'SQUAD3-2'}", site: 'jirasite'
+	      deploy adapters: [tomcat8(credentialsId: 'tomcat', path: '', url: ProdUrl)], contextPath: '/ProdWebapp', war: '**/*.war'
+			  slackSend channel: slackChannel, message: "Deployed to prod"
+			  jiraSendDeploymentInfo environmentId: 'Prod', environmentName: 'Production', environmentType: 'Production', site: JiraSitename , state: 'successful'
+			  	jiraAddComment comment: 'Deployed to prod', idOrKey: "${jiraIssue}", site: 'jirasite'
         			
 		  }
 		  
          }
 	  
-	  
+//9	  
 	  stage('Sanity Test') {
 		  steps{
 			   sh 'mvn test -f Acceptancetest/pom.xml'
-	publishHTML([escapeUnderscores:true,allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\Acceptancetest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'Sanity Test Report', reportTitles: 'HTML Report'])
-			  slackSend channel: "#alerts", message: "Sanity Test report published"
-        			jiraTransitionIssue idOrKey: "${'SQUAD3-2'}", input: [transition: [id: '31']] , site: 'jirasite'
+				publishHTML([escapeUnderscores:true,allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '\\Acceptancetest\\target\\surefire-reports', reportFiles: 'index.html', reportName: 'Sanity Test Report', reportTitles: 'HTML Report'])
+			  slackSend channel: slackChannel, message: "Sanity Test report published"
+        			jiraTransitionIssue idOrKey: "${jiraIssue}", input: [transition: [id: '31']] , site: 'jirasite'
 		  }
     }
 	
@@ -145,10 +143,10 @@ pipeline {
   }
 	post { 
 		failure {
-			slackSend channel: '#devops-learning', color:'RED', message: "Pipeline FAILURE ${env.JOB_NAME} #${env.BUILD_NUMBER}"
+			slackSend channel: slackChannelfinal, color:'RED', message: "Pipeline FAILURE ${env.JOB_NAME} #${env.BUILD_NUMBER}"
 		}
 		success {
-			slackSend channel: '#devops-learning', color:'good', message: "Pipeline Completed ${currentBuild.fullDisplayName} successfully"
+			slackSend channel: slackChannelfinal, color:'good', message: "Pipeline Completed ${currentBuild.fullDisplayName} successfully"
 		}
 	}
 	
