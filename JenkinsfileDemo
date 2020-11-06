@@ -53,17 +53,17 @@ pipeline {
     
  //3   
     
-    	stage('Static code Analysis') {
-	    		 environment {
-       	 			scannerHome = tool 'sonarqubescanner'
-   				}		
-	    steps{
-		  	 withSonarQubeEnv('sonarqube') {
-      		 	sh 'mvn clean package sonar:sonar -Dsonar.sources=. -Dsonar.tests=. -Dsonar.test.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.exclusions=**/test/java/servlet/createpage_junit.java -Dsonar.login=admin -Dsonar.password=admin'
-			slackSend channel: slackChannel, message: "SonarQube Analysis Done successfully"
-		        }
-  		}
-    }
+  //  	stage('Static code Analysis') {
+//	    		 environment {
+ //      	 			scannerHome = tool 'sonarqubescanner'
+  // 				}		
+//	    steps{
+//		  	 withSonarQubeEnv('sonarqube') {
+  //    		 	sh 'mvn clean package sonar:sonar -Dsonar.sources=. -Dsonar.tests=. -Dsonar.test.inclusions=**/test/java/servlet/createpage_junit.java -Dsonar.exclusions=**/test/java/servlet/createpage_junit.java -Dsonar.login=admin -Dsonar.password=admin'
+//			slackSend channel: slackChannel, message: "SonarQube Analysis Done successfully"
+//		        }
+ // 		}
+  //  }
     
   //4  
 	stage('Deploy to Test') {
